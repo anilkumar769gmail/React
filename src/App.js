@@ -4,7 +4,7 @@ import CartFooter from './components/cartfooter';
 import CartItems from './components/cartitems';
 
 function App() {
-  
+
   return (
     <div>
       <CartHeader/>
@@ -12,6 +12,7 @@ function App() {
       <CartFooter/>
     </div>
   );
+  
 }
 
 

@@ -48,14 +48,15 @@ class AddItem extends React.Component{
        const newProductList = {'quantity': this.state.quantity,
                                 'selectedProduct':product
                               };
-       this.setState({myArrayList:[...this.state.myArrayList, newProductList]});
+        const newProduct =  [...this.state.myArrayList, newProductList]; 
+        const total = newProduct.reduce((acc, curr) =>{
+            return acc + curr.selectedProduct.priceInCents * curr.quantity ;
+            },0)                 
+        this.setState({myArrayList:newProduct, productTotal:total}
+        
+       );
        
-       //Total price
-       const total = this.state.myArrayList.reduce((acc, curr) =>{
-       return acc + curr.selectedProduct.priceInCents;
-       },newProductList.selectedProduct.priceInCents)
-       
-       this.setState({productTotal:total});
+      //newProductList.selectedProduct.priceInCents
        
     }
    

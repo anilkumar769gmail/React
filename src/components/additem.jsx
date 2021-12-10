@@ -1,8 +1,9 @@
 
 import React from 'react'
 
+
 const products =[ 
-    { id: 40, name: 'Mediocre Iron Watch', priceInCents: 399 },
+    { id: 40, name: 'Mediocre Iron Watch', priceInCents: 400 },
     { id: 41, name: 'Heavy Duty Concrete Plate', priceInCents: 499 },
     { id: 42, name: 'Intelligent Paper Knife', priceInCents: 1999 },
     { id: 43, name: 'Small Aluminum Keyboard', priceInCents: 2500 },
@@ -18,7 +19,10 @@ class AddItem extends React.Component{
 
     state ={ quantity:0,
              productValue:40,
-             myArrayList:[]
+             myArrayList:[],
+             productTotal:0,
+             total:0
+             
             }
 
     updateQuantity=(e) =>{
@@ -36,63 +40,64 @@ class AddItem extends React.Component{
         const product = products.find(p =>{
             return(p.id === parseInt(this.state.productValue))
         })  
-        console.log(product)   
-        const newProductList = {'quantity': this.state.quantity,
-                                'selectedProduct':product};
-        this.setState({myArrayList:[...this.state.myArrayList, newProductList]});
-        
+      
+       //const productTotal = {'total':this.state.total} 
+       
+        //this.setState({productTotal:product.priceInCents});
+
+       const newProductList = {'quantity': this.state.quantity,
+                                'selectedProduct':product
+                              };
+       this.setState({myArrayList:[...this.state.myArrayList, newProductList]});
+       
+       //Total price
+       const total = this.state.myArrayList.reduce((acc, curr) =>{
+       return acc + curr.selectedProduct.priceInCents;
+       },newProductList.selectedProduct.priceInCents)
+       
+       this.setState({productTotal:total});
+       
     }
+   
 
   render(){
-   
-  console.log(this.state.productValue);
+        //console.log(this.state.productValue);
 
-    
         return(
-            
-              <div className="list-group">
+            <div className="list-group">
                 <div className="list-group-item">
                     <div className="row">
                         
                         <div>Quantity</div>
                         <input onChange={this.updateQuantity}></input>
-                        
                         <div>Products</div>
-
                         <select onChange={this.updateProduct}>
-                       {products.map((prod)=>
-                        <option value={prod.id}>{prod.name} {prod.priceInCents}</option>
-                       )}
-                    </select>
-                        {/* <Products products={products}/>  */}
+                            {products.map((product)=>
+                            <option value={product.id}>{product.name} {product.priceInCents}</option>
+                             )}
+                        </select>
                     </div>
                     <br/>
                     <button type="button" className="btn btn-primary" onClick={this.addToProductList}>Submit</button> 
                 </div>
-                <div>
-                    {/*
-                    {
-                    product: {
-                        id: 40,
-                        name: 'Mediocre Iron Watch',
-                        priceInCents: 399
-                    },
-                    quantity: 1
-                    }, 
-
-                    =======
-                    40 Mediocre Iron Watch 399 1
-                     */}
-                {this.state.myArrayList.map(listitems =>
-                   <p>{listitems.selectedProduct.id} {listitems.selectedProduct.name}
-                   {listitems.selectedProduct.priceInCents} {listitems.quantity}</p>  
-                   
+                
+                <div>  
+                    <div>Current Cart:</div>
+                    {this.state.myArrayList.map(listitems =>
+                        //{listitems.selectedProduct.id} 
+                        <div className="list-group-item">    
+                            <div className="row">
+                                <div className="col-md-8">{listitems.selectedProduct.name}</div>
+                                <div className="col-md-2">{listitems.selectedProduct.priceInCents}</div>
+                                <div className="col-md-2">{listitems.quantity}</div>
+                            </div>
+                        </div>
                     )}
                 </div>
-                
-              </div>
-            
-           
+                {/* Total: {this.state.productTotal} */}
+                <p>Current Total: ${this.state.productTotal} </p>
+            </div>
+
         );
   }
 }

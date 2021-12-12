@@ -7,11 +7,11 @@ const date= new Date();
 
 const CartFooter = () => {
     return (
-      <nav className="navbar navbar-dark bg-dark">
-          
-          <a className="navbar-brand" href='#'>&copy;{currentDate}</a>
-      </nav>
+      <div className="footer">  
+        <nav className="navbar navbar-dark bg-dark">
+            <a className="navbar-brand text-center"href='#' >&copy;{currentDate}</a>
+        </nav>
+      </div>
     )
   }
-  
   export default CartFooter

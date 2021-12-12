@@ -21,62 +21,62 @@ class AddItem extends React.Component{
              productValue:40,
              myArrayList:[],
              productTotal:0,
-             total:0
-             
             }
+    
+   
 
     updateQuantity=(e) =>{
-        e.preventDefault();
-        this.setState({quantity:e.target.value})
+        e.preventDefault();   
+        this.setState({quantity:e.target.value});
+        
     }  
     updateProduct=(e) =>{
         e.preventDefault();
-        console.log(e.target.value);
         this.setState({productValue:e.target.value})
     }  
 
     addToProductList=() =>{
-
+       
         const product = products.find(p =>{
             return(p.id === parseInt(this.state.productValue))
         })  
-      
-       //const productTotal = {'total':this.state.total} 
-       
-        //this.setState({productTotal:product.priceInCents});
 
-       const newProductList = {'quantity': this.state.quantity,
+        const newProductList = {'quantity': this.state.quantity,
                                 'selectedProduct':product
                               };
+        
+        //check for quantity
+        if(this.state.quantity === 0 || this.state.quantity ===""){
+            alert("Quantity is required!!!")
+            return;
+        }
+       
+
         const newProduct =  [...this.state.myArrayList, newProductList]; 
         const total = newProduct.reduce((acc, curr) =>{
             return acc + curr.selectedProduct.priceInCents * curr.quantity ;
-            },0)                 
-        this.setState({myArrayList:newProduct, productTotal:total}
+            },0)  
+                       
+        this.setState({myArrayList:newProduct, productTotal:total});  
         
-       );
-       
-      //newProductList.selectedProduct.priceInCents
-       
     }
+    
    
-
   render(){
-        //console.log(this.state.productValue);
-
-        return(
+    return(
+        <div className="container">
             <div className="list-group">
                 <div className="list-group-item">
-                    <div className="row">
+                    <div className="row"> 
                         
-                        <div>Quantity</div>
-                        <input onChange={this.updateQuantity}></input>
                         <div>Products</div>
                         <select onChange={this.updateProduct}>
                             {products.map((product)=>
                             <option value={product.id}>{product.name} {product.priceInCents}</option>
                              )}
                         </select>
+                        <div>Quantity</div>
+                        <input onChange={this.updateQuantity}></input>
                     </div>
                     <br/>
                     <button type="button" className="btn btn-primary" onClick={this.addToProductList}>Submit</button> 
@@ -84,7 +84,7 @@ class AddItem extends React.Component{
                 
                 <div>  
                     <div>Current Cart:</div>
-                    {this.state.myArrayList.map(listitems =>
+                        {this.state.myArrayList.map(listitems =>
                         //{listitems.selectedProduct.id} 
                         <div className="list-group-item">    
                             <div className="row">
@@ -93,12 +93,13 @@ class AddItem extends React.Component{
                                 <div className="col-md-2">{listitems.quantity}</div>
                             </div>
                         </div>
-                    )}
+                        )}
+                    Current Total: ${this.state.productTotal}
                 </div>
-                {/* Total: {this.state.productTotal} */}
-                <p>Current Total: ${this.state.productTotal} </p>
+                
+                
             </div>
-
+        </div>
         );
   }
 }

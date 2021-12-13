@@ -20,7 +20,8 @@ class AddItem extends React.Component{
     state ={ quantity:0,
              productValue:40,
              myArrayList:[],
-             productTotal:0,
+             productTotal:0, 
+             counter:0,
             }
     
    
@@ -37,31 +38,39 @@ class AddItem extends React.Component{
 
     addToProductList=() =>{
        
+
         const product = products.find(p =>{
             return(p.id === parseInt(this.state.productValue))
         })  
 
+        //get the product and quantity together in newProductList
         const newProductList = {'quantity': this.state.quantity,
                                 'selectedProduct':product
                               };
         
-        //check for quantity
+        //check for quantity validating
         if(this.state.quantity === 0 || this.state.quantity ===""){
             alert("Quantity is required!!!")
             return;
         }
-       
-
-        const newProduct =  [...this.state.myArrayList, newProductList]; 
-        const total = newProduct.reduce((acc, curr) =>{
-            return acc + curr.selectedProduct.priceInCents * curr.quantity ;
-            },0)  
-                       
-        this.setState({myArrayList:newProduct, productTotal:total});  
+       //arrays are mutable - using spread operator to spread out values in new object 
+        const newProduct =  [...this.state.myArrayList, newProductList];
         
-    }
+        
+
+        //calculate the product total
+        let currentCounter="";
+        const total = newProduct.reduce((acc, curr,index) =>{
+            currentCounter = index +1;
+            return acc + curr.selectedProduct.priceInCents * curr.quantity;
+            },0);
+         
+        //put everything in myArrayList which list items selected to be put in the cart
+        this.setState({myArrayList:newProduct, productTotal:total, counter:currentCounter,quantity:0});
+
+        
+    };
     
-   
   render(){
     return(
         <div className="container">
@@ -69,32 +78,34 @@ class AddItem extends React.Component{
                 <div className="list-group-item">
                     <div className="row"> 
                         
-                        <div>Products</div>
+                        <div>Products: Please Select <span>*</span></div>
                         <select onChange={this.updateProduct}>
                             {products.map((product)=>
                             <option value={product.id}>{product.name} {product.priceInCents}</option>
                              )}
                         </select>
-                        <div>Quantity</div>
-                        <input onChange={this.updateQuantity}></input>
+                        <div>Quantity<span>*</span></div>
+                        <input value={this.state.quantity ? this.state.quantity:""} onChange={this.updateQuantity}></input>
                     </div>
                     <br/>
                     <button type="button" className="btn btn-primary" onClick={this.addToProductList}>Submit</button> 
                 </div>
                 
                 <div>  
-                    <div>Current Cart:</div>
-                        {this.state.myArrayList.map(listitems =>
-                        //{listitems.selectedProduct.id} 
+                    <div>Current Cart: Number of Items in Cart:<span>{this.state.counter}</span></div>
+                        {this.state.myArrayList.map((listitems,index) =>
                         <div className="list-group-item">    
                             <div className="row">
                                 <div className="col-md-8">{listitems.selectedProduct.name}</div>
-                                <div className="col-md-2">{listitems.selectedProduct.priceInCents}</div>
+                                <div className="col-md-2">${listitems.selectedProduct.priceInCents}</div>
                                 <div className="col-md-2">{listitems.quantity}</div>
                             </div>
                         </div>
+                        
                         )}
-                    Current Total: ${this.state.productTotal}
+                        
+                    Current Price Total: <span>${this.state.productTotal}</span>
+                    
                 </div>
                 
                 

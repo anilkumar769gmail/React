@@ -47,10 +47,11 @@ class AddItem extends React.Component{
         const newProductList = {'quantity': this.state.quantity,
                                 'selectedProduct':product
                               };
+
         
         //check for quantity validating
-        if(this.state.quantity === 0 || this.state.quantity ===""){
-            alert("Quantity is required!!!")
+        if(this.state.quantity === 0 || this.state.quantity ==="" || isNaN(this.state.quantity)){
+            alert("Quantity is required in number!!!")
             return;
         }
        //arrays are mutable - using spread operator to spread out values in new object 
@@ -78,8 +79,9 @@ class AddItem extends React.Component{
                 <div className="list-group-item">
                     <div className="row"> 
                         
-                        <div>Products: Please Select <span>*</span></div>
+                        <div>Products<span>*</span></div>
                         <select onChange={this.updateProduct}>
+                            <option value="none" >Please select</option>
                             {products.map((product)=>
                             <option value={product.id}>{product.name} {product.priceInCents}</option>
                              )}
@@ -92,7 +94,7 @@ class AddItem extends React.Component{
                 </div>
                 
                 <div>  
-                    <div>Current Cart: Number of Items in Cart:<span>{this.state.counter}</span></div>
+                    <div>Current Cart: Number of Items in Cart:<span>({this.state.counter})</span></div>
                         {this.state.myArrayList.map((listitems,index) =>
                         <div className="list-group-item">    
                             <div className="row">

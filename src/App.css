@@ -3,7 +3,17 @@
    bottom:0px; 
    width: 100vw;
 }
+.mydata{
+    
+    margin-left:10px;
+    padding-left: 20px;
+}
+
 span{
     color:red;
+}
+
+.numofitem{
+    color:hsl(246, 100%, 50%);
 }
 
